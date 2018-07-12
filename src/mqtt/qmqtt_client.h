@@ -216,7 +216,7 @@ public slots:
     void subscribe(const QString& topic, const quint8 qos = 0);
     void unsubscribe(const QString& topic);
 
-    quint16 publish(const QMQTT::Message& message);
+    quint16 publish(const QMQTT::Message& message, quint16 msgid = 0);
 
 signals:
     void connected();
@@ -226,7 +226,7 @@ signals:
     void subscribed(const QString& topic, const quint8 qos = 0);
     void unsubscribed(const QString& topic);
     void published(const QMQTT::Message& message, quint16 msgid = 0);
-    void received(const QMQTT::Message& message);
+    void received(const QMQTT::Message& message, quint16 msgid = 0);
     void pingresp();
 
 protected slots:

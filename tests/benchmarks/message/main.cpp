@@ -52,7 +52,7 @@ void tst_message::message()
     QByteArray payload;
 
     QBENCHMARK {
-        QMQTT::Message message(0, QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
+        QMQTT::Message message(QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
         qos = message.qos();
         retain = message.retain();
         dup = message.dup();
@@ -82,15 +82,15 @@ void tst_message::equality()
     if (firstRun) {
         bool equals;
         QBENCHMARK {
-            QMQTT::Message message1(0, QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
-            QMQTT::Message message2(0, QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
+            QMQTT::Message message1(QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
+            QMQTT::Message message2(QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
             equals = message1 == message2;
         }
         QCOMPARE(equals, false);
     } else {
         bool equals;
-        QMQTT::Message message1(0, QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
-        QMQTT::Message message2(0, QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
+        QMQTT::Message message1(QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
+        QMQTT::Message message2(QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
         QBENCHMARK {
             equals = message1 == message2;
         }
@@ -112,12 +112,12 @@ void tst_message::copy()
 
     if (firstRun) {
         QBENCHMARK {
-            QMQTT::Message message(0, QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
+            QMQTT::Message message(QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
             QMQTT::Message tmp;
             message = tmp;
         }
     } else {
-        QMQTT::Message message(0, QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
+        QMQTT::Message message(QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
         QMQTT::Message tmp;
         QBENCHMARK {
             message = tmp;
@@ -139,11 +139,11 @@ void tst_message::write()
 
     if (firstRun) {
         QBENCHMARK {
-            QMQTT::Message message(0, QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
+            QMQTT::Message message(QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
             message.setRetain(true);
         }
     } else {
-        QMQTT::Message message(0, QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
+        QMQTT::Message message(QStringLiteral("test/test"), QByteArrayLiteral("test"), 1, true, false);
         QBENCHMARK {
             message.setRetain(true);
         }
@@ -164,16 +164,16 @@ void tst_message::copyOnWrite()
 
     if (firstRun) {
         QBENCHMARK {
-            QMQTT::Message message1(0, QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
-            QMQTT::Message message2(0, QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
+            QMQTT::Message message1(QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
+            QMQTT::Message message2(QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
             QMQTT::Message message = message1;
             message.setRetain(false);
             message = message2;
             message.setDup(false);
         }
     } else {
-        QMQTT::Message message1(0, QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
-        QMQTT::Message message2(0, QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
+        QMQTT::Message message1(QStringLiteral("test/1"), QByteArrayLiteral("1"), 1, true, false);
+        QMQTT::Message message2(QStringLiteral("test/2"), QByteArrayLiteral("2"), 2, false, true);
         QBENCHMARK {
             QMQTT::Message message = message1;
             message.setRetain(false);

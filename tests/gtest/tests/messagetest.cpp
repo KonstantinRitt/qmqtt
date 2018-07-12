@@ -19,7 +19,6 @@ public:
 
 TEST_F(MessageTest, defaultConstructor_Test)
 {
-    EXPECT_EQ(0, _message->id());
     EXPECT_EQ(0, _message->qos());
     EXPECT_FALSE(_message->retain());
     EXPECT_FALSE(_message->dup());
@@ -29,7 +28,7 @@ TEST_F(MessageTest, defaultConstructor_Test)
 
 TEST_F(MessageTest, constructorWithParametersHasDefaultValues_Test)
 {
-    _message.reset(new QMQTT::Message(5, "topic", "payload"));
+    _message.reset(new QMQTT::Message("topic", "payload"));
     EXPECT_EQ(0, _message->qos());
     EXPECT_FALSE(_message->retain());
     EXPECT_FALSE(_message->dup());
@@ -37,8 +36,7 @@ TEST_F(MessageTest, constructorWithParametersHasDefaultValues_Test)
 
 TEST_F(MessageTest, constructorWithParameters_Test)
 {
-    _message.reset(new QMQTT::Message(5, "topic", "payload", 2, true, true));
-    EXPECT_EQ(5, _message->id());
+    _message.reset(new QMQTT::Message("topic", "payload", 2, true, true));
     EXPECT_EQ(2, _message->qos());
     EXPECT_TRUE(_message->retain());
     EXPECT_TRUE(_message->dup());
@@ -48,10 +46,9 @@ TEST_F(MessageTest, constructorWithParameters_Test)
 
 TEST_F(MessageTest, copyConstructor_Test)
 {
-    QMQTT::Message originalMessage(5, "topic", "payload", 1, true, true);
+    QMQTT::Message originalMessage("topic", "payload", 1, true, true);
     QMQTT::Message copy(originalMessage);
-    _message.reset(new QMQTT::Message(5, "topic", "payload", 1, true, true));
-    EXPECT_EQ(5, copy.id());
+    _message.reset(new QMQTT::Message("topic", "payload", 1, true, true));
     EXPECT_EQ(1, copy.qos());
     EXPECT_TRUE(copy.retain());
     EXPECT_TRUE(copy.dup());
@@ -61,12 +58,11 @@ TEST_F(MessageTest, copyConstructor_Test)
 
 TEST_F(MessageTest, assignmentOperator_Test)
 {
-    QMQTT::Message originalMessage(5, "topic", "payload", 2, true, true);
+    QMQTT::Message originalMessage("topic", "payload", 2, true, true);
     QMQTT::Message copy;
 
     copy = originalMessage;
 
-    EXPECT_EQ(5, copy.id());
     EXPECT_EQ(2, copy.qos());
     EXPECT_TRUE(copy.retain());
     EXPECT_TRUE(copy.dup());
@@ -74,12 +70,6 @@ TEST_F(MessageTest, assignmentOperator_Test)
     EXPECT_EQ(QByteArray("payload"), copy.payload());
 }
 
-
-TEST_F(MessageTest, idSettable_Test)
-{
-    _message->setId(5);
-    EXPECT_EQ(5, _message->id());
-}
 
 TEST_F(MessageTest, qosSettable_Test)
 {

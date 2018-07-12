@@ -41,7 +41,6 @@ class MessagePrivate : public QSharedData
 public:
     inline MessagePrivate()
         : QSharedData(),
-          id(0),
           qos(0),
           retain(false),
           dup(false)
@@ -49,7 +48,6 @@ public:
 
     inline MessagePrivate(const MessagePrivate &other)
         : QSharedData(other),
-          id(other.id),
           qos(other.qos),
           retain(other.retain),
           dup(other.dup),
@@ -57,10 +55,9 @@ public:
           payload(other.payload)
     {}
 
-    inline MessagePrivate(quint16 id, const QString &topic, const QByteArray &payload,
+    inline MessagePrivate(const QString &topic, const QByteArray &payload,
                           quint8 qos, bool retain, bool dup)
         : QSharedData(),
-          id(id),
           qos(qos),
           retain(retain),
           dup(dup),
@@ -68,7 +65,6 @@ public:
           payload(payload)
     {}
 
-    quint16 id;
     quint8 qos : 2;
     quint8 retain: 1;
     quint8 dup: 1;

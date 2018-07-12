@@ -221,10 +221,8 @@ void QMQTT::ClientPrivate::sendConnect()
     sendFrame(frame);
 }
 
-quint16 QMQTT::ClientPrivate::sendPublish(const Message &message)
+quint16 QMQTT::ClientPrivate::sendPublish(const Message &message, quint16 msgid)
 {
-    quint16 msgid = message.id();
-
     quint8 header = PUBLISH;
     header = SETRETAIN(header, message.retain() ? 1 : 0);
     header = SETQOS(header, message.qos());
@@ -314,10 +312,10 @@ quint16 QMQTT::ClientPrivate::nextmid()
     return _gmid++;
 }
 
-quint16 QMQTT::ClientPrivate::publish(const Message& message)
+quint16 QMQTT::ClientPrivate::publish(const Message& message, quint16 msgid)
 {
     Q_Q(Client);
-    quint16 msgid = sendPublish(message);
+    msgid = sendPublish(message, msgid);
 
     // Emit published only at QOS0
     if (message.qos() == QOS0)
@@ -379,7 +377,7 @@ void QMQTT::ClientPrivate::onNetworkReceived(const QMQTT::Frame& frm)
         if( qos > QOS0) {
             mid = frame.readInt();
         }
-        handlePublish(Message(mid, topic, frame.data(), qos, retain, dup));
+        handlePublish(Message(topic, frame.data(), qos, retain, dup), mid);
         break;
     case PUBACK:
     case PUBREC:
@@ -437,19 +435,19 @@ void QMQTT::ClientPrivate::handleConnack(const quint8 ack)
     }
 }
 
-void QMQTT::ClientPrivate::handlePublish(const Message& message)
+void QMQTT::ClientPrivate::handlePublish(const Message& message, quint16 msgid)
 {
     Q_Q(Client);
 
     if(message.qos() == QOS1)
     {
-        sendPuback(PUBACK, message.id());
+        sendPuback(PUBACK, msgid);
     }
     else if(message.qos() == QOS2)
     {
-        sendPuback(PUBREC, message.id());
+        sendPuback(PUBREC, msgid);
     }
-    emit q->received(message);
+    emit q->received(message, msgid);
 }
 
 void QMQTT::ClientPrivate::handlePuback(const quint8 type, const quint16 msgid)

@@ -100,7 +100,7 @@ public:
     void onPingTimeout();
     quint16 sendUnsubscribe(const QString &topic);
     quint16 sendSubscribe(const QString &topic, const quint8 qos);
-    quint16 sendPublish(const Message &message);
+    quint16 sendPublish(const Message &message, quint16 msgid);
     void sendPuback(const quint8 type, const quint16 mid);
     void sendDisconnect();
     void sendFrame(const Frame &frame);
@@ -108,13 +108,13 @@ public:
     void stopKeepAlive();
     void onNetworkConnected();
     void onNetworkDisconnected();
-    quint16 publish(const Message& message);
+    quint16 publish(const Message& message, quint16 msgid);
     void puback(const quint8 type, const quint16 msgid);
     void subscribe(const QString& topic, const quint8 qos);
     void unsubscribe(const QString& topic);
     void onNetworkReceived(const QMQTT::Frame& frame);
     void handleConnack(const quint8 ack);
-    void handlePublish(const Message& message);
+    void handlePublish(const Message& message, quint16 msgid);
     void handlePuback(const quint8 type, const quint16 msgid);
     void handleSuback(const QString& topic, const quint8 qos);
     void handleUnsuback(const QString& topic);

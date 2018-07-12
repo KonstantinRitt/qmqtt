@@ -45,7 +45,7 @@ class Q_MQTT_EXPORT Message
 {
 public:
     Message();
-    explicit Message(const quint16 id, const QString &topic, const QByteArray &payload,
+    explicit Message(const QString &topic, const QByteArray &payload,
                      const quint8 qos = 0, const bool retain = false, const bool dup = false);
     Message(const Message &other);
     ~Message();
@@ -62,9 +62,6 @@ public:
 
     inline void swap(Message &other) Q_DECL_NOTHROW
     { qSwap(d, other.d); }
-
-    quint16 id() const;
-    void setId(const quint16 id);
 
     quint8 qos() const;
     void setQos(const quint8 qos);

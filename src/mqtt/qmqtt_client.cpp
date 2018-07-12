@@ -314,10 +314,10 @@ void QMQTT::Client::onNetworkConnected()
     d->onNetworkConnected();
 }
 
-quint16 QMQTT::Client::publish(const Message& message)
+quint16 QMQTT::Client::publish(const Message& message, quint16 msgid)
 {
     Q_D(Client);
-    return d->publish(message);
+    return d->publish(message, msgid);
 }
 
 void QMQTT::Client::subscribe(const QString& topic, const quint8 qos)

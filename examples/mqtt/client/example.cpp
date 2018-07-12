@@ -65,9 +65,9 @@ public slots:
 
     void onTimeout()
     {
-        QMQTT::Message message(_number, EXAMPLE_TOPIC,
+        QMQTT::Message message(EXAMPLE_TOPIC,
                                QString("Number is %1").arg(_number).toUtf8());
-        publish(message);
+        publish(message, _number);
         _number++;
         if(_number >= 10)
         {

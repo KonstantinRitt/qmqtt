@@ -324,8 +324,8 @@ TEST_F(ClientTest, publishSendsPublishMessage_Test)
     QMQTT::Frame frame;
     EXPECT_CALL(*_networkMock, sendFrame(_)).WillOnce(SaveArg<0>(&frame));
 
-    QMQTT::Message message(222, "topic", QByteArray("payload"));
-    _client->publish(message);
+    QMQTT::Message message("topic", QByteArray("payload"));
+    _client->publish(message, 222);
 
     EXPECT_EQ(PUBLISH_TYPE, getHeaderType(frame.header()));
 }
@@ -403,9 +403,9 @@ TEST_F(ClientTest, publishEmitsPublishedSignal_Test)
     EXPECT_CALL(*_networkMock, sendFrame(_));
     qRegisterMetaType<QMQTT::Message>("QMQTT::Message&");
     QSignalSpy spy(_client.data(), &QMQTT::Client::published);
-    QMQTT::Message message(222, "topic", QByteArray("payload"));
+    QMQTT::Message message("topic", QByteArray("payload"));
 
-    quint16 msgid = _client->publish(message);
+    quint16 msgid = _client->publish(message, 222);
 
     ASSERT_EQ(1, spy.count());
     EXPECT_EQ(message, spy.at(0).at(0).value<QMQTT::Message>());

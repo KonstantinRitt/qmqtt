@@ -39,9 +39,9 @@ Message::Message()
 {
 }
 
-Message::Message(const quint16 id, const QString &topic, const QByteArray &payload,
+Message::Message(const QString &topic, const QByteArray &payload,
                  const quint8 qos, const bool retain, const bool dup)
-    : d(new MessagePrivate(id, topic, payload, qos, retain, dup))
+    : d(new MessagePrivate(topic, payload, qos, retain, dup))
 {
 }
 
@@ -64,22 +64,11 @@ bool Message::operator==(const Message &other) const
 {
     if (d == other.d)
         return true;
-    return d->id == other.d->id
-            && d->qos == other.d->qos
+    return d->qos == other.d->qos
             && d->retain == other.d->retain
             && d->dup == other.d->dup
             && d->topic == other.d->topic
             && d->payload == other.d->payload;
-}
-
-quint16 Message::id() const
-{
-    return d->id;
-}
-
-void Message::setId(const quint16 id)
-{
-    d->id = id;
 }
 
 quint8 Message::qos() const
